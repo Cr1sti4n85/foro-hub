@@ -1,0 +1,31 @@
+package foro.hub.api.entitites;
+
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.util.List;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "cursos")
+@Entity
+public class Curso {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "nombre")
+    private String nombre;
+
+    @Column(name = "categoria")
+    private String categoria;
+
+    @OneToMany(mappedBy = "curso")
+    private List<Topico> topicos;
+}
