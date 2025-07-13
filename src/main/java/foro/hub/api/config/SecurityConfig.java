@@ -29,6 +29,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(c ->
                         c.requestMatchers(HttpMethod.POST, "/usuarios").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/login").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/cursos").permitAll() //temporal
                                 .anyRequest().authenticated()
                 );
 
