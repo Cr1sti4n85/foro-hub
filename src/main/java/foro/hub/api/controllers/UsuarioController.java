@@ -7,6 +7,7 @@ import foro.hub.api.repositories.UsuarioRepository;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +22,7 @@ import java.util.Map;
 public class UsuarioController {
 
     private final UsuarioRepository usuarioRepository;
+    private final PasswordEncoder passEncoder;
 
     @PostMapping
     public ResponseEntity<?> registrarUsuario(
@@ -34,7 +36,7 @@ public class UsuarioController {
                     Map.of("email", "El email ya está registrado")
             );
         }
-
+        usuario.setPassword(passEncoder.encode(usuario.getPassword()));
         usuarioRepository.save(usuario);
         var uri = ucb.path("usuarios/{id}").buildAndExpand(usuario.getId()).toUri();
 
