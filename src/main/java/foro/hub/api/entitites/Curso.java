@@ -26,8 +26,8 @@ public class Curso {
     private String nombre;
 
     @Column(name = "categoria")
-    @Enumerated(EnumType.STRING)
-    private Categoria categoria;
+//    @Enumerated(EnumType.STRING)
+    private String categoria;
 
     @OneToMany(mappedBy = "curso")
     private List<Topico> topicos;
