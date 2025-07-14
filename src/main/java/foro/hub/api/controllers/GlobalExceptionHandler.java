@@ -1,14 +1,17 @@
 package foro.hub.api.controllers;
 
+import foro.hub.api.exceptions.CourseNotFoundException;
+import foro.hub.api.exceptions.TopicoDuplicadoException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.HashMap;
 import java.util.Map;
 
-@ControllerAdvice
+@RestControllerAdvice
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -27,6 +30,18 @@ public class GlobalExceptionHandler {
                 });
         return ResponseEntity.badRequest().body(errors);
 
+    }
+
+    @ExceptionHandler(TopicoDuplicadoException.class)
+    public ResponseEntity<Map<String, String>> handleTopicoDuplicado(){
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(Map.of("error", "Este tópico ya existe"));
+    }
+
+    @ExceptionHandler(CourseNotFoundException.class)
+    public ResponseEntity<Map<String, String>> handleCourseNotFound(){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(Map.of("error", "Curso no encontrado"));
     }
 
 }

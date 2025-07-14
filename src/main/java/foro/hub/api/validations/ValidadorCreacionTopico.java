@@ -1,9 +1,15 @@
 package foro.hub.api.validations;
 
 import foro.hub.api.dto.DatosCreacionTopico;
+import foro.hub.api.exceptions.TopicoDuplicadoException;
 import foro.hub.api.repositories.TopicoRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+
+import java.util.Map;
 
 @Component
 @AllArgsConstructor
@@ -15,7 +21,7 @@ public class ValidadorCreacionTopico implements ValidaTopico{
         var existeTopico = topicoRepository.existsByTituloAndMensaje(datos.titulo(), datos.mensaje());
 
         if (existeTopico){
-            throw new RuntimeException("Ya existe un topico con ese titulo y mensaje");
+            throw new TopicoDuplicadoException();
         }
 
     }

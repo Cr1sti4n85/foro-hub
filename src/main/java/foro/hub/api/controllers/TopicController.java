@@ -75,10 +75,4 @@ public class TopicController {
 
     }
 
-    //Exceptions
-    @ExceptionHandler(CourseNotFoundException.class)
-    public ResponseEntity<Map<String, String>> handleCourseNotFound(){
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body(Map.of("error", "Curso no encontrado"));
-    }
 }
