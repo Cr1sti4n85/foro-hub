@@ -37,6 +37,10 @@ public class Usuario {
     @OneToMany(mappedBy = "usuario")
     private List<Topico> topicos;
 
+    @OneToMany(mappedBy = "autorRespuesta")
+    private List<Respuesta> respuestas;
+
+
     public Usuario(@Valid DatosRegistroUsuario userData) {
         this.nombre = userData.nombre();
         this.email = userData.email();

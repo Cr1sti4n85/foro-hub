@@ -1,6 +1,8 @@
 package foro.hub.api.entitites;
 
+import foro.hub.api.dto.DatosCreacionRespuesta;
 import jakarta.persistence.*;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -34,7 +36,10 @@ public class Respuesta {
 
     @ManyToOne
     @JoinColumn(name = "usuario_id")
-    private Usuario autorTopico;
+    private Usuario autorRespuesta;
 
 
+    public Respuesta(@Valid DatosCreacionRespuesta datosRespuesta) {
+        this.mensaje = datosRespuesta.mensaje();
+    }
 }
