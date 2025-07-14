@@ -8,7 +8,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
@@ -32,7 +31,7 @@ public class Topico {
     @Column(name = "fecha_creacion", insertable = false, updatable = false)
     private LocalDateTime fechaCreacion;
 
-    @Column(name = "status", insertable = false, updatable = false)
+    @Column(name = "status", insertable = false)
     @Enumerated(EnumType.STRING)
     private Status status;
 
