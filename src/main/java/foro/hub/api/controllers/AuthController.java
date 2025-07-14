@@ -35,8 +35,10 @@ public class AuthController {
                 )
         );
 
+        var user = usuarioRepository.findByEmail(loginData.email()).orElseThrow();
+
         //creacion token
-        var token = jwtService.generateToken(loginData.email());
+        var token = jwtService.generateToken(user);
 
         return ResponseEntity.ok(new JwtResponse(token));
 
@@ -47,8 +49,8 @@ public class AuthController {
         //esto obtiene el objeto authentication que se crea en el filter jwt
         var auth = SecurityContextHolder.getContext().getAuthentication();
         //getPrincipal retorna un Object
-        var userEmail = (String) auth.getPrincipal();
-        var user = usuarioRepository.findByEmail(userEmail).orElse(null);
+        var userId = (Long) auth.getPrincipal();
+        var user = usuarioRepository.findById(userId).orElse(null);
 
         if(user == null){
             return ResponseEntity.notFound().build();
