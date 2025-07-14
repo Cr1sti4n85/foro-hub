@@ -8,7 +8,7 @@ public record DatosDetalleTopico(
         String mensaje
 ) {
     public DatosDetalleTopico(Topico nuevoTopico) {
-        this(nuevoTopico.getId(),
+        this(   nuevoTopico.getId(),
                 nuevoTopico.getTitulo(),
                 nuevoTopico.getMensaje());
     }

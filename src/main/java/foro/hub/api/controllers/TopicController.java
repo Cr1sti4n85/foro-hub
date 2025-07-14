@@ -10,6 +10,7 @@ import foro.hub.api.repositories.CursoRepository;
 import foro.hub.api.repositories.RespuestaRepository;
 import foro.hub.api.repositories.TopicoRepository;
 import foro.hub.api.services.AuthService;
+import foro.hub.api.services.TopicoService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +23,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 public class TopicController {
 
     private final CursoRepository cursoRepository;
+    private final TopicoService topicoService;
     private final AuthService authService;
     private final TopicoRepository topicoRepository;
     private final RespuestaRepository respuestaRepository;
@@ -31,22 +33,12 @@ public class TopicController {
             @Valid @RequestBody DatosCreacionTopico datosTopico,
             UriComponentsBuilder ucb
     ){
-        var user = authService.getCurrentUser();
-        if(user == null){
-            return ResponseEntity.notFound().build();
-        }
-        var curso = cursoRepository.findById(datosTopico.cursoId()).orElse(null);
-        if(curso == null){
-            return ResponseEntity.notFound().build();
-        }
 
-        var nuevoTopico = new Topico(datosTopico);
-        nuevoTopico.setUsuario(user);
-        nuevoTopico.setCurso(curso);
-        topicoRepository.save(nuevoTopico);
-        var uri = ucb.path("/topicos/{id}").buildAndExpand(nuevoTopico.getId()).toUri();
+        var nuevoTopico = topicoService.crear(datosTopico);
 
-        return ResponseEntity.created(uri).body(new DatosDetalleTopico(nuevoTopico));
+        var uri = ucb.path("/topicos/{id}").buildAndExpand(nuevoTopico.id()).toUri();
+
+        return ResponseEntity.created(uri).body(nuevoTopico);
 
     }
 
