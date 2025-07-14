@@ -1,9 +1,6 @@
 package foro.hub.api.controllers;
 
-import foro.hub.api.dto.DatosCreacionRespuesta;
-import foro.hub.api.dto.DatosCreacionTopico;
-import foro.hub.api.dto.DatosDetalleRespuesta;
-import foro.hub.api.dto.DatosDetalleTopico;
+import foro.hub.api.dto.*;
 import foro.hub.api.entitites.Respuesta;
 import foro.hub.api.entitites.Topico;
 import foro.hub.api.exceptions.CourseNotFoundException;
@@ -14,11 +11,13 @@ import foro.hub.api.services.AuthService;
 import foro.hub.api.services.TopicoService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -69,9 +68,19 @@ public class TopicController {
 
 
         var uri = ucb.path("/topicos/{topicId}/respuestas/{id}")
-                .buildAndExpand(topico.getId(), nuevaRespuesta.getId());
+                .buildAndExpand(topico.getId(), nuevaRespuesta.getId()).toUri();
 
-        return ResponseEntity.created(uri.toUri()).body(new DatosDetalleRespuesta(nuevaRespuesta));
+        return ResponseEntity.created(uri).body(new DatosDetalleRespuesta(nuevaRespuesta));
+
+    }
+
+    @GetMapping
+    public ResponseEntity<List<DatosListaTopicos>> listarTopicos(@RequestParam String nombre){
+
+        var topicos = topicoRepository.findAllByNombreDeCurso(nombre)
+                .stream().map(DatosListaTopicos::new).toList();
+
+        return ResponseEntity.ok().body(topicos);
 
     }
 
