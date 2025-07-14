@@ -3,11 +3,11 @@ package foro.hub.api.services;
 import foro.hub.api.dto.DatosCreacionTopico;
 import foro.hub.api.dto.DatosDetalleTopico;
 import foro.hub.api.entitites.Topico;
+import foro.hub.api.exceptions.CourseNotFoundException;
 import foro.hub.api.repositories.CursoRepository;
 import foro.hub.api.repositories.TopicoRepository;
 import foro.hub.api.validations.ValidaTopico;
 import lombok.AllArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,7 +27,7 @@ public class TopicoService {
         }
         var curso = cursoRepository.findById(datosTopico.cursoId()).orElse(null);
         if(curso == null){
-            throw new RuntimeException("Curso no encontrado");
+            throw new CourseNotFoundException();
         }
 
         //validar datos duplicados

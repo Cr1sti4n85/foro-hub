@@ -6,6 +6,7 @@ import foro.hub.api.dto.DatosDetalleRespuesta;
 import foro.hub.api.dto.DatosDetalleTopico;
 import foro.hub.api.entitites.Respuesta;
 import foro.hub.api.entitites.Topico;
+import foro.hub.api.exceptions.CourseNotFoundException;
 import foro.hub.api.repositories.CursoRepository;
 import foro.hub.api.repositories.RespuestaRepository;
 import foro.hub.api.repositories.TopicoRepository;
@@ -13,9 +14,12 @@ import foro.hub.api.services.AuthService;
 import foro.hub.api.services.TopicoService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
+
+import java.util.Map;
 
 @RestController
 @RequestMapping("/topicos")
@@ -69,5 +73,12 @@ public class TopicController {
 
         return ResponseEntity.created(uri.toUri()).body(new DatosDetalleRespuesta(nuevaRespuesta));
 
+    }
+
+    //Exceptions
+    @ExceptionHandler(CourseNotFoundException.class)
+    public ResponseEntity<Map<String, String>> handleCourseNotFound(){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(Map.of("error", "Curso no encontrado"));
     }
 }
