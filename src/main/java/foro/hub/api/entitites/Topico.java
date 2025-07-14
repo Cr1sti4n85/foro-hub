@@ -1,10 +1,15 @@
 package foro.hub.api.entitites;
 
+import foro.hub.api.dto.DatosCreacionTopico;
 import jakarta.persistence.*;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -24,10 +29,10 @@ public class Topico {
     @Column(name = "mensaje")
     private String mensaje;
 
-    @Column(name = "fecha_creacion")
-    private String fechaCreacion;
+    @Column(name = "fecha_creacion", insertable = false, updatable = false)
+    private LocalDateTime fechaCreacion;
 
-    @Column(name = "status")
+    @Column(name = "status", insertable = false, updatable = false)
     @Enumerated(EnumType.STRING)
     private Status status;
 
@@ -38,4 +43,9 @@ public class Topico {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "curso_id")
     private Curso curso;
+
+    public Topico(@Valid DatosCreacionTopico datosTopico) {
+        this.titulo = datosTopico.titulo();
+        this.mensaje = datosTopico.mensaje();
+    }
 }

@@ -7,7 +7,6 @@ import foro.hub.api.repositories.UsuarioRepository;
 import foro.hub.api.services.JwtService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
