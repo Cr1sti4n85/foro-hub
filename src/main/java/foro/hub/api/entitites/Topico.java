@@ -34,8 +34,8 @@ public class Topico {
     private LocalDateTime fechaCreacion;
 
     @Column(name = "status", insertable = false)
-    @Enumerated(EnumType.STRING)
-    private Status status;
+//    @Enumerated(EnumType.STRING)
+    private String status;
 
     @ManyToOne
     @JoinColumn(name = "usuario_id")
@@ -53,7 +53,7 @@ public class Topico {
         this.mensaje = datosTopico.mensaje();
     }
 
-    public void actualizarInfo(DatosActualizarTopico datosActualizacion) {
+    public void actualizarInfo(@Valid DatosActualizarTopico datosActualizacion) {
         if(datosActualizacion.titulo() != null){
             this.titulo = datosActualizacion.titulo();
         }
@@ -61,7 +61,7 @@ public class Topico {
             this.mensaje = datosActualizacion.mensaje();
         }
         if(datosActualizacion.status() != null){
-            this.status = Status.valueOf(datosActualizacion.status());
+            this.status = datosActualizacion.status();
         }
     }
 }

@@ -21,8 +21,6 @@ public class GlobalExceptionHandler {
     {
         Map<String, String> errors = new HashMap<>();
 
-        //getBindingResult da acceso a detalles de la excepcion
-        //getFieldErrors retorna una lista de los errores
         e.getBindingResult()
                 .getFieldErrors()
                 .forEach(fe -> {

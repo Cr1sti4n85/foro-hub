@@ -109,7 +109,7 @@ public class TopicController {
     @PutMapping("/{id}")
     public ResponseEntity<DatosDetalleTopico> actualizarTopico(
             @PathVariable Long id,
-            @RequestBody DatosActualizarTopico datosActualizacion
+            @Valid @RequestBody DatosActualizarTopico datosActualizacion
     ){
         var topico = topicoRepository.findById(id).orElse(null);
         if(topico == null){

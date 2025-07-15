@@ -12,7 +12,7 @@ public record DatosListaTopicos(
         String titulo,
         String mensaje,
         LocalDateTime fechaCreacion,
-        Status status,
+        String status,
         DatosDetalleUsuario autor,
         DatosDetalleCurso curso
 ) {
