@@ -11,6 +11,8 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -99,6 +101,33 @@ public class TopicController {
         if(topico == null){
             return ResponseEntity.notFound().build();
         }
+
+        return ResponseEntity.ok().body(new DatosDetalleTopico(topico));
+
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<DatosDetalleTopico> actualizarTopico(
+            @PathVariable Long id,
+            @RequestBody DatosActualizarTopico datosActualizacion
+    ){
+        var topico = topicoRepository.findById(id).orElse(null);
+        if(topico == null){
+            return ResponseEntity.notFound().build();
+        }
+
+        var user = authService.getCurrentUser();
+        if(user == null){
+            return ResponseEntity.notFound().build();
+        }
+
+        //revisar si el usuario que actualiza es el propietario del topico
+        if(!user.getId().equals(topico.getUsuario().getId())){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+
+        topico.actualizarInfo(datosActualizacion);
+        topicoRepository.save(topico);
 
         return ResponseEntity.ok().body(new DatosDetalleTopico(topico));
 

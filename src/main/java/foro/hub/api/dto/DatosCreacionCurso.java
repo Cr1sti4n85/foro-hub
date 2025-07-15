@@ -8,7 +8,7 @@ import jakarta.validation.constraints.NotNull;
 public record DatosCreacionCurso(
         @NotBlank(message = "El campo nombre es obligatorio")
         String nombre,
-        @ValidCategoria(message = "Categoria no aceptada")
+        @ValidCategoria
         String categoria
 ) {
 }

@@ -1,5 +1,6 @@
 package foro.hub.api.entitites;
 
+import foro.hub.api.dto.DatosActualizarTopico;
 import foro.hub.api.dto.DatosCreacionTopico;
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
@@ -50,5 +51,17 @@ public class Topico {
     public Topico(@Valid DatosCreacionTopico datosTopico) {
         this.titulo = datosTopico.titulo();
         this.mensaje = datosTopico.mensaje();
+    }
+
+    public void actualizarInfo(DatosActualizarTopico datosActualizacion) {
+        if(datosActualizacion.titulo() != null){
+            this.titulo = datosActualizacion.titulo();
+        }
+        if(datosActualizacion.mensaje() != null){
+            this.mensaje = datosActualizacion.mensaje();
+        }
+        if(datosActualizacion.status() != null){
+            this.status = Status.valueOf(datosActualizacion.status());
+        }
     }
 }
