@@ -92,4 +92,16 @@ public class TopicController {
 
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<DatosDetalleTopico> buscarPorId(@PathVariable Long id) {
+
+        var topico = topicoRepository.findById(id).orElse(null);
+        if(topico == null){
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok().body(new DatosDetalleTopico(topico));
+
+    }
+
 }
