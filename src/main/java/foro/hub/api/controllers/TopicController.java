@@ -2,8 +2,6 @@ package foro.hub.api.controllers;
 
 import foro.hub.api.dto.*;
 import foro.hub.api.entitites.Respuesta;
-import foro.hub.api.entitites.Topico;
-import foro.hub.api.exceptions.CourseNotFoundException;
 import foro.hub.api.repositories.CursoRepository;
 import foro.hub.api.repositories.RespuestaRepository;
 import foro.hub.api.repositories.TopicoRepository;
@@ -11,14 +9,13 @@ import foro.hub.api.services.AuthService;
 import foro.hub.api.services.TopicoService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import org.springframework.data.repository.query.Param;
-import org.springframework.http.HttpStatus;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/topicos")
@@ -75,10 +72,21 @@ public class TopicController {
     }
 
     @GetMapping
-    public ResponseEntity<List<DatosListaTopicos>> listarTopicos(@RequestParam String nombre){
+    public ResponseEntity<Page<DatosListaTopicos>> listarTopicos(
+            @RequestParam(required = false) String nombre,
+            Pageable paginacion){
 
-        var topicos = topicoRepository.findAllByNombreDeCurso(nombre)
-                .stream().map(DatosListaTopicos::new).toList();
+        Page<DatosListaTopicos> topicos;
+        if(nombre == null){
+            topicos = topicoRepository.findAll(paginacion).map(
+                    DatosListaTopicos::new
+            );
+            return ResponseEntity.ok().body(topicos);
+        } else {
+            topicos = topicoRepository.findAllByNombreDeCurso(nombre, paginacion).map(
+                    DatosListaTopicos::new
+            );
+        }
 
         return ResponseEntity.ok().body(topicos);
 
