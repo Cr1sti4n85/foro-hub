@@ -4,6 +4,7 @@ import foro.hub.api.exceptions.CourseNotFoundException;
 import foro.hub.api.exceptions.TopicoDuplicadoException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -47,6 +48,12 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Map<String, String>> handleTypeMismatch(){
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(Map.of("error", "El parámetro no es válido"));
+    }
+
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    public ResponseEntity<Map<String, String>> handleMethodNotSupported(){
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(Map.of("error", "Endpoint no válido, Verifica que la URL sea correcta"));
     }
 
 }
