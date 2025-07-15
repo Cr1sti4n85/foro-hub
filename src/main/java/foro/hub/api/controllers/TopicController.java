@@ -12,12 +12,9 @@ import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/topicos")
@@ -133,4 +130,26 @@ public class TopicController {
 
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> borrarTopico(
+            @PathVariable Long id
+    ){
+        var topico = topicoRepository.findById(id).orElse(null);
+        if(topico == null){
+            return ResponseEntity.notFound().build();
+        }
+
+        var user = authService.getCurrentUser();
+        if(user == null){
+            return ResponseEntity.notFound().build();
+        }
+        if(!user.getId().equals(topico.getUsuario().getId())){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+
+        topicoRepository.delete(topico);
+
+        return ResponseEntity.noContent().build();
+
+    }
 }
