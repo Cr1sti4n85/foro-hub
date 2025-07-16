@@ -1,5 +1,6 @@
 package foro.hub.api.services;
 
+import foro.hub.api.entitites.Role;
 import foro.hub.api.entitites.Usuario;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
@@ -21,7 +22,7 @@ public class JwtService {
         return Jwts.builder()
                 .subject(user.getId().toString())
                 .claim("email", user.getEmail())
-                .claim("name", user.getNombre())
+                .claim("role", user.getRole())
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + 1000 * tokenExpiration))
                 .signWith(Keys.hmacShaKeyFor(secret.getBytes()))
@@ -50,6 +51,11 @@ public class JwtService {
 
     public Long getUserIdFromToken(String token){
         return Long.valueOf(getClaims(token).getSubject());
+    }
+
+    //metodo para obtener el rol del usuario
+    public Role getRoleFromToken(String token){
+        return Role.valueOf(getClaims(token).get("role", String.class));
     }
 
 }
