@@ -1,5 +1,6 @@
 package foro.hub.api.entitites;
 
+import foro.hub.api.dto.DatosActualizarRespuesta;
 import foro.hub.api.dto.DatosCreacionRespuesta;
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
@@ -40,6 +41,11 @@ public class Respuesta {
 
 
     public Respuesta(@Valid DatosCreacionRespuesta datosRespuesta) {
+
         this.mensaje = datosRespuesta.mensaje();
+    }
+
+    public void actualizarInfo(@Valid DatosActualizarRespuesta datosActualizacion) {
+        this.solucion = datosActualizacion.solucion();
     }
 }

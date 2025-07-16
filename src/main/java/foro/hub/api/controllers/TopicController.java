@@ -152,4 +152,31 @@ public class TopicController {
         return ResponseEntity.noContent().build();
 
     }
+
+    @PutMapping("/{topicId}/respuestas/{respId}")
+    public ResponseEntity<Void> aceptarRespuestaComoSolucion(
+            @PathVariable Long respId,
+            @Valid @RequestBody DatosActualizarRespuesta datosActualizacion
+    ){
+
+        var respuesta = respuestaRepository.findById(respId).orElse(null);
+        if(respuesta == null){
+            return ResponseEntity.notFound().build();
+        }
+
+        var user = authService.getCurrentUser();
+        if(user == null){
+            return ResponseEntity.notFound().build();
+        }
+
+        if(!user.getId().equals(respuesta.getTopico().getUsuario().getId())){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+
+        respuesta.actualizarInfo(datosActualizacion);
+        respuestaRepository.save(respuesta);
+
+        return ResponseEntity.ok().build();
+
+    }
 }
