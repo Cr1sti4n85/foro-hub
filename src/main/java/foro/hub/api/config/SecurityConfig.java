@@ -1,6 +1,7 @@
 package foro.hub.api.config;
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import foro.hub.api.entitites.Role;
 import foro.hub.api.filters.JwtAuthenticationFilter;
 import lombok.AllArgsConstructor;
@@ -20,8 +21,12 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import java.nio.file.AccessDeniedException;
+import java.util.Map;
 
 @Configuration
 @EnableWebSecurity
@@ -51,7 +56,19 @@ public class SecurityConfig {
             c.accessDeniedHandler((request,
                                    response,
                                    accessDeniedException) ->
-                    response.setStatus(HttpStatus.FORBIDDEN.value()));
+                    {
+                        response.setStatus(HttpStatus.FORBIDDEN.value());
+                        response.setContentType("application/json");
+
+                        Map<String, Object> errorResponse = Map.of(
+                                "error", "No estás autorizado para realizar esta operación"
+                        );
+
+                        new ObjectMapper().writeValue(response.getOutputStream(), errorResponse);
+                    }
+
+            );
+
         });
 
         return http.build();

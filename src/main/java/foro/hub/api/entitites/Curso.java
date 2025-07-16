@@ -35,4 +35,14 @@ public class Curso {
         this.nombre = datosCurso.nombre();
         this.categoria = datosCurso.categoria();
     }
+
+    public void actualizarInfo(@Valid DatosCreacionCurso datosCurso) {
+
+        if (datosCurso.nombre() != null){
+            this.nombre = datosCurso.nombre();
+        }
+        if (datosCurso.categoria() != null){
+            this.categoria = datosCurso.categoria();
+        }
+    }
 }
