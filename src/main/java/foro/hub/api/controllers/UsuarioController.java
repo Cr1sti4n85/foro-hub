@@ -2,6 +2,7 @@ package foro.hub.api.controllers;
 
 import foro.hub.api.dto.DatosDetalleUsuario;
 import foro.hub.api.dto.DatosRegistroUsuario;
+import foro.hub.api.entitites.Role;
 import foro.hub.api.entitites.Usuario;
 import foro.hub.api.repositories.UsuarioRepository;
 import jakarta.validation.Valid;
@@ -37,6 +38,7 @@ public class UsuarioController {
             );
         }
         usuario.setPassword(passEncoder.encode(usuario.getPassword()));
+        usuario.setRole(Role.USER);
         usuarioRepository.save(usuario);
         var uri = ucb.path("usuarios/{id}").buildAndExpand(usuario.getId()).toUri();
 

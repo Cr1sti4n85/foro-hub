@@ -4,6 +4,7 @@ import foro.hub.api.dto.DatosDetalleUsuario;
 import foro.hub.api.dto.JwtResponse;
 import foro.hub.api.dto.LoginRequest;
 import foro.hub.api.repositories.UsuarioRepository;
+import foro.hub.api.services.AuthService;
 import foro.hub.api.services.JwtService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -23,6 +24,7 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
     private final UsuarioRepository usuarioRepository;
+    private final AuthService authService;
 
     @PostMapping("/login")
     public ResponseEntity<JwtResponse> login(@Valid @RequestBody LoginRequest loginData){
@@ -45,12 +47,8 @@ public class AuthController {
 
     @GetMapping("/profile")
     public ResponseEntity<?> getProfile(){
-        //esto obtiene el objeto authentication que se crea en el filter jwt
-        var auth = SecurityContextHolder.getContext().getAuthentication();
-        //getPrincipal retorna un Object
-        var userId = (Long) auth.getPrincipal();
-        var user = usuarioRepository.findById(userId).orElse(null);
 
+        var user = authService.getCurrentUser();
         if(user == null){
             return ResponseEntity.notFound().build();
         }

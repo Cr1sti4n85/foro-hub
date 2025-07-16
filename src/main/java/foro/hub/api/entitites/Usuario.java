@@ -31,6 +31,10 @@ public class Usuario {
     @Column(name = "password")
     private String password;
 
+    @Column(name = "role")
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
     @OneToMany(mappedBy = "usuario")
     private List<Topico> topicos;
 
