@@ -8,12 +8,9 @@ import foro.hub.api.services.AuthService;
 import foro.hub.api.services.JwtService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -53,11 +50,5 @@ public class AuthController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(new DatosDetalleUsuario(user));
-    }
-
-    //este metodo retornara unauthorized al enviar credenciales erroneas
-    @ExceptionHandler(BadCredentialsException.class)
-    public ResponseEntity<Void> handleBadCredentials(){
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
 }
