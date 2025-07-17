@@ -6,6 +6,7 @@ import foro.hub.api.entitites.Role;
 import foro.hub.api.entitites.Usuario;
 import foro.hub.api.repositories.UsuarioRepository;
 import foro.hub.api.services.AuthService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -46,6 +47,7 @@ public class UsuarioController {
     }
 
     @GetMapping("/perfil")
+    @SecurityRequirement(name = "bearer-key")
     public ResponseEntity<?> getProfile(){
 
         var user = authService.getCurrentUser();
@@ -56,6 +58,7 @@ public class UsuarioController {
     }
 
     @DeleteMapping("/perfil")
+    @SecurityRequirement(name = "bearer-key")
     public ResponseEntity<Void> desactivarCuenta(){
         var user = authService.getCurrentUser();
         if(user == null){

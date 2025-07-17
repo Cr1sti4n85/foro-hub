@@ -5,6 +5,7 @@ import foro.hub.api.dto.DatosCreacionCurso;
 import foro.hub.api.dto.DatosListaCursos;
 import foro.hub.api.entitites.Curso;
 import foro.hub.api.repositories.CursoRepository;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/cursos")
+@SecurityRequirement(name = "bearer-key")
 @AllArgsConstructor
 public class CursoController {
 

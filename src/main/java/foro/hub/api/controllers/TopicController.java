@@ -7,6 +7,7 @@ import foro.hub.api.repositories.RespuestaRepository;
 import foro.hub.api.repositories.TopicoRepository;
 import foro.hub.api.services.AuthService;
 import foro.hub.api.services.TopicoService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -18,6 +19,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
 @RequestMapping("/topicos")
+@SecurityRequirement(name = "bearer-key")
 @AllArgsConstructor
 public class TopicController {
 
