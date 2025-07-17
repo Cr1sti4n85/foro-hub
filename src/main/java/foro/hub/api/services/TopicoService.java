@@ -2,6 +2,7 @@ package foro.hub.api.services;
 
 import foro.hub.api.dto.DatosCreacionTopico;
 import foro.hub.api.dto.DatosDetalleTopico;
+import foro.hub.api.entitites.Status;
 import foro.hub.api.entitites.Topico;
 import foro.hub.api.exceptions.CourseNotFoundException;
 import foro.hub.api.repositories.CursoRepository;
@@ -36,6 +37,7 @@ public class TopicoService {
         var nuevoTopico = new Topico(datosTopico);
         nuevoTopico.setUsuario(user);
         nuevoTopico.setCurso(curso);
+        nuevoTopico.setStatus(Status.ABIERTO.name());
         topicoRepository.save(nuevoTopico);
 
         return new DatosDetalleTopico(nuevoTopico);

@@ -12,6 +12,6 @@ public record DatosDetalleTopico(
         this(   nuevoTopico.getId(),
                 nuevoTopico.getTitulo(),
                 nuevoTopico.getMensaje(),
-                nuevoTopico.getStatus().toString());
+                nuevoTopico.getStatus());
     }
 }

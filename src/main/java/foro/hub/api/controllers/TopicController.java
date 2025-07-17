@@ -179,4 +179,16 @@ public class TopicController {
         return ResponseEntity.ok().build();
 
     }
+
+    @GetMapping("/{topicoId}/respuestas")
+    public ResponseEntity<Page<DatosListaRespuestas>> listarRespuestas(
+            @PathVariable Long topicoId,
+            Pageable paginacion){
+
+        Page<DatosListaRespuestas> topicos = respuestaRepository
+                .findAllByTopicoId(topicoId, paginacion).map(DatosListaRespuestas::new);
+
+        return ResponseEntity.ok().body(topicos);
+
+    }
 }

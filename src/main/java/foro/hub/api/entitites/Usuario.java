@@ -35,7 +35,7 @@ public class Usuario {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @Column(name = "activo")
+    @Column(name = "activo", insertable = false)
     private Boolean activo;
 
     @OneToMany(mappedBy = "usuario")

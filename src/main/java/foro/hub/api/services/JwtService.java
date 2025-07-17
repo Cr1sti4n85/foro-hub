@@ -17,7 +17,7 @@ public class JwtService {
     private String secret;
 
     public String generateToken(Usuario user){
-        final long tokenExpiration = 86400; //1 day
+        final long tokenExpiration = 10800; //3 hours
 
         return Jwts.builder()
                 .subject(user.getId().toString())
