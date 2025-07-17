@@ -2,6 +2,7 @@ package foro.hub.api.services;
 
 import foro.hub.api.entitites.Usuario;
 import foro.hub.api.exceptions.CuentaEliminadaException;
+import foro.hub.api.exceptions.UnauthorizedNotFoundUserException;
 import foro.hub.api.repositories.UsuarioRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,7 +21,11 @@ public class AuthService {
         var authentication = SecurityContextHolder.getContext().getAuthentication();
         var userId = (Long) authentication.getPrincipal();
 
-        return usuarioRepository.findById(userId).orElse(null);
+        var user = usuarioRepository.findById(userId).orElse(null);
+        if(user == null){
+            throw new UnauthorizedNotFoundUserException();
+        }
+        return user;
     }
 
     public Usuario validarCuenta(String email){

@@ -1,14 +1,11 @@
 package foro.hub.api.controllers;
 
-import foro.hub.api.dto.DatosDetalleUsuario;
 import foro.hub.api.dto.JwtResponse;
 import foro.hub.api.dto.LoginRequest;
-import foro.hub.api.repositories.UsuarioRepository;
 import foro.hub.api.services.AuthService;
 import foro.hub.api.services.JwtService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -21,7 +18,6 @@ public class AuthController {
 
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
-    private final UsuarioRepository usuarioRepository;
     private final AuthService authService;
 
     @PostMapping("/login")

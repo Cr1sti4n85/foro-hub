@@ -50,9 +50,6 @@ public class TopicController {
             UriComponentsBuilder ucb
             ){
         var user = authService.getCurrentUser();
-        if(user == null){
-            return ResponseEntity.notFound().build();
-        }
 
         var topico = topicoRepository.findById(topicId).orElse(null);
         if(topico == null){
@@ -116,9 +113,6 @@ public class TopicController {
         }
 
         var user = authService.getCurrentUser();
-        if(user == null){
-            return ResponseEntity.notFound().build();
-        }
 
         //revisar si el usuario que actualiza es el propietario del topico
         if(!user.getId().equals(topico.getUsuario().getId())){
@@ -142,9 +136,7 @@ public class TopicController {
         }
 
         var user = authService.getCurrentUser();
-        if(user == null){
-            return ResponseEntity.notFound().build();
-        }
+
         if(!user.getId().equals(topico.getUsuario().getId())){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
@@ -167,9 +159,6 @@ public class TopicController {
         }
 
         var user = authService.getCurrentUser();
-        if(user == null){
-            return ResponseEntity.notFound().build();
-        }
 
         if(!user.getId().equals(respuesta.getTopico().getUsuario().getId())){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();

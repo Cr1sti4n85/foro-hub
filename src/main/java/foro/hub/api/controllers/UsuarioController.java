@@ -51,9 +51,7 @@ public class UsuarioController {
     public ResponseEntity<?> getProfile(){
 
         var user = authService.getCurrentUser();
-        if(user == null){
-            return ResponseEntity.notFound().build();
-        }
+
         return ResponseEntity.ok(new DatosDetalleUsuario(user));
     }
 
@@ -61,9 +59,6 @@ public class UsuarioController {
     @SecurityRequirement(name = "bearer-key")
     public ResponseEntity<Void> desactivarCuenta(){
         var user = authService.getCurrentUser();
-        if(user == null){
-            return ResponseEntity.notFound().build();
-        }
         user.desactivar();
         usuarioRepository.save(user);
         return ResponseEntity.ok().build();
