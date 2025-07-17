@@ -3,6 +3,7 @@ package foro.hub.api.controllers;
 import foro.hub.api.exceptions.CourseNotFoundException;
 import foro.hub.api.exceptions.CuentaEliminadaException;
 import foro.hub.api.exceptions.TopicoDuplicadoException;
+import foro.hub.api.exceptions.UnauthorizedNotFoundUserException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -78,6 +79,14 @@ public class GlobalExceptionHandler {
                 .status(HttpStatus.UNAUTHORIZED)
                 .body(Map.of("error", "Esta cuenta está desactivada. Contácta al administrador"));
     }
+
+    @ExceptionHandler(UnauthorizedNotFoundUserException.class)
+    public ResponseEntity<Map<String, String>> handleUsuarioNoEncontrado(){
+        return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .body(Map.of("error", "Usuario no válido"));
+    }
+
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Map<String, String>> handleUnexpectedException(Exception ex) {

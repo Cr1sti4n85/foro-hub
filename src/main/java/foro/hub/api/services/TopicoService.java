@@ -5,6 +5,7 @@ import foro.hub.api.dto.DatosDetalleTopico;
 import foro.hub.api.entitites.Status;
 import foro.hub.api.entitites.Topico;
 import foro.hub.api.exceptions.CourseNotFoundException;
+import foro.hub.api.exceptions.UnauthorizedNotFoundUserException;
 import foro.hub.api.repositories.CursoRepository;
 import foro.hub.api.repositories.TopicoRepository;
 import foro.hub.api.validations.ValidaTopico;
@@ -24,7 +25,7 @@ public class TopicoService {
     public DatosDetalleTopico crear(DatosCreacionTopico datosTopico){
         var user = authService.getCurrentUser();
         if(user == null){
-           throw new RuntimeException("Usuario no autenticado");
+           throw new UnauthorizedNotFoundUserException();
         }
         var curso = cursoRepository.findById(datosTopico.cursoId()).orElse(null);
         if(curso == null){
