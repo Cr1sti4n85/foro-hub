@@ -42,6 +42,15 @@ public class CursoController {
         return ResponseEntity.ok().body(cursos);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<DatosListaCursos> buscarPorId(@PathVariable Long id){
+        var curso = cursoRepository.findById(id).orElse(null);
+        if(curso == null){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok().body(new DatosListaCursos(curso));
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<Void> actualizarCurso(
             @PathVariable Long id,

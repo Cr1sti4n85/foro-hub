@@ -44,7 +44,10 @@ public class SecurityConfig {
                 c.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(c -> c
-                        .requestMatchers("/cursos/**").hasRole(Role.ADMIN.name())
+                        .requestMatchers(HttpMethod.POST, "/cursos/**").hasRole(Role.ADMIN.name())
+                        .requestMatchers(HttpMethod.PUT, "/cursos/**").hasRole(Role.ADMIN.name())
+                        .requestMatchers(HttpMethod.DELETE, "/cursos/**").hasRole(Role.ADMIN.name())
+                        .requestMatchers(HttpMethod.GET, "/cursos/**").hasAnyRole(Role.ADMIN.name(), Role.USER.name())
                         .requestMatchers(HttpMethod.POST, "/usuarios").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                         .requestMatchers("v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**").permitAll()
