@@ -8,6 +8,7 @@ import foro.hub.api.services.AuthService;
 import foro.hub.api.services.JwtService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -32,10 +33,7 @@ public class AuthController {
                         loginData.password()
                 )
         );
-
-        var user = usuarioRepository.findByEmail(loginData.email()).orElseThrow();
-
-        //creacion token
+        var user = authService.validarCuenta(loginData.email());
         var token = jwtService.generateToken(user);
 
         return ResponseEntity.ok(new JwtResponse(token));

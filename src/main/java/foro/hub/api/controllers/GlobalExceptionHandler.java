@@ -1,6 +1,7 @@
 package foro.hub.api.controllers;
 
 import foro.hub.api.exceptions.CourseNotFoundException;
+import foro.hub.api.exceptions.CuentaEliminadaException;
 import foro.hub.api.exceptions.TopicoDuplicadoException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -68,6 +69,14 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<Void> handleBadCredentials(){
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    }
+
+    //este metodo retornara unauthorized al enviar credenciales erroneas
+    @ExceptionHandler(CuentaEliminadaException.class)
+    public ResponseEntity<Map<String, String>> handleCuentaEliminada(){
+        return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .body(Map.of("error", "Esta cuenta está desactivada. Contácta al administrador"));
     }
 
     @ExceptionHandler(Exception.class)

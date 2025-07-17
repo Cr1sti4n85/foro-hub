@@ -1,8 +1,11 @@
 package foro.hub.api.services;
 
 import foro.hub.api.entitites.Usuario;
+import foro.hub.api.exceptions.CuentaEliminadaException;
 import foro.hub.api.repositories.UsuarioRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -11,11 +14,22 @@ import org.springframework.stereotype.Service;
 public class AuthService {
 
     private final UsuarioRepository usuarioRepository;
+    private final JwtService jwtService;
 
     public Usuario getCurrentUser() {
         var authentication = SecurityContextHolder.getContext().getAuthentication();
         var userId = (Long) authentication.getPrincipal();
 
         return usuarioRepository.findById(userId).orElse(null);
+    }
+
+    public Usuario validarCuenta(String email){
+        var user = usuarioRepository.findByEmail(email).orElseThrow();
+        //validar si cuenta esta activa
+        if(!user.getActivo()){
+            throw new CuentaEliminadaException();
+        }
+        return user;
+
     }
 }
