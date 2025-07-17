@@ -1,5 +1,6 @@
 package foro.hub.api.controllers;
 
+import foro.hub.api.dto.DatoRol;
 import foro.hub.api.dto.DatosDetalleUsuario;
 import foro.hub.api.dto.DatosRegistroUsuario;
 import foro.hub.api.entitites.Role;
@@ -60,6 +61,22 @@ public class UsuarioController {
     public ResponseEntity<Void> desactivarCuenta(){
         var user = authService.getCurrentUser();
         user.desactivar();
+        usuarioRepository.save(user);
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/{id}")
+    @SecurityRequirement(name = "bearer-key")
+    public ResponseEntity<Void> cambiarRol(
+            @PathVariable Long id,
+            @RequestBody DatoRol role
+    ){
+
+        var user = usuarioRepository.findById(id).orElse(null);
+        if(user == null){
+            return ResponseEntity.notFound().build();
+        }
+        user.setRole(role.role());
         usuarioRepository.save(user);
         return ResponseEntity.ok().build();
     }
