@@ -1,0 +1,2 @@
+ALTER TABLE usuarios
+ADD activo TINYINT DEFAULT 1 NOT NULL;

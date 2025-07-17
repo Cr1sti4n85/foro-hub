@@ -35,6 +35,9 @@ public class Usuario {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    @Column(name = "activo")
+    private Boolean activo;
+
     @OneToMany(mappedBy = "usuario")
     private List<Topico> topicos;
 
@@ -49,4 +52,7 @@ public class Usuario {
     }
 
 
+    public void desactivar() {
+        this.activo = false;
+    }
 }

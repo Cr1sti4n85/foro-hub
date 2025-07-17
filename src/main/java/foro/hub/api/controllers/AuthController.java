@@ -42,13 +42,4 @@ public class AuthController {
 
     }
 
-    @GetMapping("/profile")
-    public ResponseEntity<?> getProfile(){
-
-        var user = authService.getCurrentUser();
-        if(user == null){
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(new DatosDetalleUsuario(user));
-    }
 }

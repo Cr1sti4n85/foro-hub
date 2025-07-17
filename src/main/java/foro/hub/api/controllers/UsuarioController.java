@@ -5,14 +5,12 @@ import foro.hub.api.dto.DatosRegistroUsuario;
 import foro.hub.api.entitites.Role;
 import foro.hub.api.entitites.Usuario;
 import foro.hub.api.repositories.UsuarioRepository;
+import foro.hub.api.services.AuthService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.Map;
@@ -24,6 +22,7 @@ public class UsuarioController {
 
     private final UsuarioRepository usuarioRepository;
     private final PasswordEncoder passEncoder;
+    private final AuthService authService;
 
     @PostMapping
     public ResponseEntity<?> registrarUsuario(
@@ -45,5 +44,27 @@ public class UsuarioController {
         return ResponseEntity.created(uri).body(new DatosDetalleUsuario(usuario));
 
     }
+
+    @GetMapping("/perfil")
+    public ResponseEntity<?> getProfile(){
+
+        var user = authService.getCurrentUser();
+        if(user == null){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(new DatosDetalleUsuario(user));
+    }
+
+    @DeleteMapping("/perfil")
+    public ResponseEntity<Void> desactivarCuenta(){
+        var user = authService.getCurrentUser();
+        if(user == null){
+            return ResponseEntity.notFound().build();
+        }
+        user.desactivar();
+        usuarioRepository.save(user);
+        return ResponseEntity.ok().build();
+    }
+
     
 }
